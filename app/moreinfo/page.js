@@ -5,9 +5,14 @@ import { useState } from 'react';
 import { completeForm } from './actions';
 
 export default function MoreInfo(context) {
-  let [firstname, setFirstname] = useState('');
-  let [terms, setTerms] = useState(false);
-  let { state, domain } = context.searchParams;
+  let { state, domain, accepted_terms } = context.searchParams;
+  let [firstname, setFirstname] = useState(
+    context.searchParams.firstname !== 'undefined'
+      ? context.searchParams.firstname
+      : ''
+  );
+  let [terms, setTerms] = useState(accepted_terms === 'true' || false);
+  console.log(terms);
   return (
     <form className={styles.form} action={completeForm}>
       <label htmlFor="firstname">First Name</label>
