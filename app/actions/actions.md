@@ -1,4 +1,5 @@
 # 1. Progressive Profiling:
+```
 /**
 * Handler that will be called during the execution of a PostLogin flow.
 *
@@ -42,12 +43,14 @@ exports.onContinuePostLogin = async (event, api) => {
   api.user.setUserMetadata('firstname', firstname);
   api.user.setUserMetadata('accepted_terms', terms === 'true');
 }
+```
 
 # 2. Step Up MFA
 ## Pre-req:
 ## Create an API in CIC, name it api://resource
 ## Add as an audience to React SPA auth_config.json
 ## Enable MFA options in Auth0 console. Refresh React SPA application to be challenged with MFA.
+```
 /**
 * Handler that will be called during the execution of a PostLogin flow.
 *
@@ -75,8 +78,10 @@ exports.onExecutePostLogin = async (event, api) => {
 */
 // exports.onContinuePostLogin = async (event, api) => {
 // };
+```
 
 # 3. Augment the ID token by pulling information from external service. Relog as user to show new claims in token.
+```
 /**
 * Handler that will be called during the execution of a PostLogin flow.
 *
@@ -113,8 +118,10 @@ exports.onExecutePostLogin = async (event, api) => {
 */
 // exports.onContinuePostLogin = async (event, api) => {
 // };
+```
 
 # 4. Validate user registration based on pre-defined condition
+```
 /**
 * Handler that will be called during the execution of a PreUserRegistration flow.
 *
@@ -143,8 +150,10 @@ exports.onExecutePreUserRegistration = async (event, api) => {
   }
 
 };
+```
 
 # 5. Augment user profile during registration
+```
 /**
 * Handler that will be called during the execution of a PreUserRegistration flow.
 *
@@ -167,8 +176,10 @@ exports.onExecutePreUserRegistration = async (event, api) => {
     api.user.setUserMetadata('external_id', externalUserProfile['uid'])
   }
 };
+```
 
 # 6. Assign roles to users
+```
 exports.onExecutePostUserRegistration = async (event) => {
   const namespace = 'https://auth0.com';
   const ManagementClient = require('auth0').ManagementClient;
@@ -198,8 +209,10 @@ exports.onExecutePostUserRegistration = async (event) => {
     console.error(err);
   }
 }
+```
 
 # 7. Augment JWT
+```
 exports.onExecutePostLogin = async (event, api) => {
     const namespace = 'https://';
     const { last_name, first_name, no, client_id } = event.user.user_metadata;
@@ -212,8 +225,10 @@ exports.onExecutePostLogin = async (event, api) => {
    
     }
   };
+```
 
 # 8. Denying login if user isn't verified.
+```
 exports.onExecutePreUserRegistration = async (event, api) => {
 };
 function emailVerified(user, context, callback) {
@@ -225,3 +240,4 @@ function emailVerified(user, context, callback) {
     return callback(null, user, context);
   }
 }
+```
