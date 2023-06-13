@@ -168,7 +168,7 @@ exports.onExecutePreUserRegistration = async (event, api) => {
   }
 };
 
-# 6. 
+# 6. Assign roles to users
 exports.onExecutePostUserRegistration = async (event) => {
   const namespace = 'https://auth0.com';
   const ManagementClient = require('auth0').ManagementClient;
@@ -196,5 +196,32 @@ exports.onExecutePostUserRegistration = async (event) => {
     );
   } catch (err) {
     console.error(err);
+  }
+}
+
+# 7. Augment JWT
+exports.onExecutePostLogin = async (event, api) => {
+    const namespace = 'https://';
+    const { last_name, first_name, no, client_id } = event.user.user_metadata;
+  
+    if (event.authentication) {
+      // Set claims 
+      api.accessToken.setCustomClaim(`${namespace}/family_name`, last_name);
+      api.accessToken.setCustomClaim(`${namespace}/given_name`, first_name);
+      api.accessToken.setCustomClaim(`${namespace}/no`, no);
+   
+    }
+  };
+
+# 8. Denying login if user isn't verified.
+exports.onExecutePreUserRegistration = async (event, api) => {
+};
+function emailVerified(user, context, callback) {
+  if (!user.email_verified) {
+    return callback(
+      new UnauthorizedError('Please verify your email before logging in.')
+    );
+  } else {
+    return callback(null, user, context);
   }
 }
