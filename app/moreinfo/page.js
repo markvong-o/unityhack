@@ -12,7 +12,9 @@ export default function MoreInfo(context) {
       : ''
   );
   let [terms, setTerms] = useState(accepted_terms === 'true' || false);
-  console.log(terms);
+  if (!state && !domain) {
+    return <div>Error...you weren't redirected here.</div>;
+  }
   return (
     <div className={styles.formDiv}>
       <h1>Unity</h1>
